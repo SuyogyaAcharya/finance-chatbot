@@ -1,0 +1,21 @@
+# Environment variables (contains secrets)
+.env
+.env.local
+.env.production
+
+# Dependencies
+node_modules/
+npm-debug.log*
+
+# OS files
+.DS_Store
+.DS_Store?
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+
+# Kubernetes secrets
+k8s/secrets.yaml
+k8s/*-secret.yaml
