@@ -9,8 +9,9 @@ app.use(express.json());
 
 app.get('/health', (req, res) => {
     res.json({ 
-        status: 'Chat service is healthy', 
-        timestamp: new Date().toISOString() 
+        status: 'Chat service is healthy - VERSION 2!', 
+        timestamp: new Date().toISOString(),
+        version: '2.0'
     });
 });
 

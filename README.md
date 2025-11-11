@@ -1,40 +1,100 @@
-# AI-Powered Personal Finance Chatbot
+Personal Finance Chatbot
 
-A cloud-native microservices application using AI for expense tracking.
+A microservices app for tracking expenses.
 
-## Day 2 Progress
-- ✅ Created finance microservice for expense management
-- ✅ Implemented Docker Compose for multi-container orchestration
-- ✅ Added Nginx load balancer for request routing
-- ✅ Both services accessible through single entry point
+Progress:
 
-## Architecture
-User → Nginx (port 8080) → Chat Service (3001)
-→ Finance Service (3002)
+Deployed to Kubernetes (Minikube)
 
-## Technologies
-- Node.js, Express.js
-- Docker, Docker Compose
-- Nginx Load Balancer
+2 replicas per service for high availability
 
-## Running Locally
-```bash
-docker-compose up --build
+Services can discover each other internally
 
-Access services at:
+Scaling and rolling updates tested
 
-Load Balancer: http://localhost:8080/health
-Chat API: http://localhost:8080/api/chat/
-Finance API: http://localhost:8080/api/finance/
+Accessible via port-forwarding
 
-Available Endpoints
-Finance Service
+Architecture:
+Kubernetes Cluster:
 
-GET /api/finance/expenses - Get all expenses
-POST /api/finance/expenses - Add new expense
-GET /api/finance/categories - Get expense categories
-DELETE /api/finance/expenses/:id - Delete expense
+Chat Service (2 pods)
 
-Chat Service
+Finance Service (2 pods)
 
-POST /api/chat/chat - Send chat message
+Services for internal/external access
+
+Tech Stack:
+
+Node.js + Express.js
+
+Docker for containerization
+
+Kubernetes for orchestration
+
+Minikube for local cluster
+
+Running Locally:
+
+Start Minikube:
+minikube start
+
+Build Docker images inside Minikube:
+minikube -p minikube docker-env | Invoke-Expression
+docker build -t chat-service:v1 ./chat-service
+docker build -t finance-service:v1 ./finance-service
+
+Deploy to Kubernetes:
+kubectl apply -f k8s/chat-deployment.yaml
+kubectl apply -f k8s/finance-deployment.yaml
+
+Access Services:
+
+Chat Service:
+kubectl port-forward service/chat-service 3001:80
+
+Finance Service:
+kubectl port-forward service/finance-service 3002:80
+
+Access in browser:
+
+Chat: http://localhost:3001
+
+Finance: http://localhost:3002
+
+Useful Commands:
+
+kubectl get pods → list pods
+
+kubectl get services → list services
+
+kubectl logs <pod> → view logs
+
+kubectl scale deployment chat-service --replicas=3 → scale service
+
+kubectl exec -it <pod> -- sh → open shell in pod
+
+minikube dashboard → open web UI
+
+Endpoints:
+
+Finance Service:
+
+GET /expenses
+
+POST /expenses
+
+GET /categories
+
+GET /health
+
+Chat Service:
+
+POST /chat
+
+GET /health
+
+Next Steps:
+
+Add PostgreSQL for persistent storage
+
+Integrate OpenAI API for AI chat
