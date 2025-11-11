@@ -16,13 +16,38 @@ spec:
     spec:
       containers:
       - name: finance-service
-        image: finance-service:v1
+        image: finance-service:v2
         imagePullPolicy: Never
         ports:
         - containerPort: 3002
         env:
         - name: NODE_ENV
           value: "production"
+        - name: DB_HOST
+          valueFrom:
+            secretKeyRef:
+              name: postgres-secret
+              key: DB_HOST
+        - name: DB_PORT
+          valueFrom:
+            secretKeyRef:
+              name: postgres-secret
+              key: DB_PORT
+        - name: DB_NAME
+          valueFrom:
+            secretKeyRef:
+              name: postgres-secret
+              key: POSTGRES_DB
+        - name: DB_USER
+          valueFrom:
+            secretKeyRef:
+              name: postgres-secret
+              key: POSTGRES_USER
+        - name: DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: postgres-secret
+              key: POSTGRES_PASSWORD
 ---
 apiVersion: v1
 kind: Service

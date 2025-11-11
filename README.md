@@ -1,100 +1,67 @@
-Personal Finance Chatbot
+Day 4 Complete ✅
 
-A microservices app for tracking expenses.
+Integrated PostgreSQL database with persistent storage
 
-Progress:
+Implemented PersistentVolumeClaims for data durability
 
-Deployed to Kubernetes (Minikube)
+Updated finance service with database operations
 
-2 replicas per service for high availability
+Added Kubernetes Secrets for credential management
 
-Services can discover each other internally
+Data persists across pod restarts and deletions
 
-Scaling and rolling updates tested
+Architecture
 
-Accessible via port-forwarding
-
-Architecture:
 Kubernetes Cluster:
 
-Chat Service (2 pods)
+Chat Service (2 pods) - Stateless
 
-Finance Service (2 pods)
+Finance Service (2 pods) - Stateless
 
-Services for internal/external access
+PostgreSQL (1 pod) - Stateful with PersistentVolume
 
-Tech Stack:
+Services for networking
 
-Node.js + Express.js
+Technologies
 
-Docker for containerization
+Backend: Node.js, Express.js
 
-Kubernetes for orchestration
+Database: PostgreSQL
 
-Minikube for local cluster
+Containerization: Docker
 
-Running Locally:
+Orchestration: Kubernetes
 
-Start Minikube:
+Storage: PersistentVolumes
+
+Security: Kubernetes Secrets
+
+Running
+
+Start minikube:
 minikube start
+eval $(minikube docker-env)
 
-Build Docker images inside Minikube:
-minikube -p minikube docker-env | Invoke-Expression
+Build images:
 docker build -t chat-service:v1 ./chat-service
-docker build -t finance-service:v1 ./finance-service
+docker build -t finance-service:v2 ./finance-service
 
-Deploy to Kubernetes:
+Deploy everything:
+kubectl apply -f k8s/secrets.yaml
+kubectl apply -f k8s/postgres-deployment.yaml
 kubectl apply -f k8s/chat-deployment.yaml
 kubectl apply -f k8s/finance-deployment.yaml
 
-Access Services:
-
-Chat Service:
-kubectl port-forward service/chat-service 3001:80
-
-Finance Service:
+Access services:
 kubectl port-forward service/finance-service 3002:80
 
-Access in browser:
+Database Schema
 
-Chat: http://localhost:3001
-
-Finance: http://localhost:3002
-
-Useful Commands:
-
-kubectl get pods → list pods
-
-kubectl get services → list services
-
-kubectl logs <pod> → view logs
-
-kubectl scale deployment chat-service --replicas=3 → scale service
-
-kubectl exec -it <pod> -- sh → open shell in pod
-
-minikube dashboard → open web UI
-
-Endpoints:
-
-Finance Service:
-
-GET /expenses
-
-POST /expenses
-
-GET /categories
-
-GET /health
-
-Chat Service:
-
-POST /chat
-
-GET /health
-
-Next Steps:
-
-Add PostgreSQL for persistent storage
-
-Integrate OpenAI API for AI chat
+CREATE TABLE expenses (
+id SERIAL PRIMARY KEY,
+description TEXT NOT NULL,
+amount DECIMAL(10,2) NOT NULL,
+category VARCHAR(50) NOT NULL,
+date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
