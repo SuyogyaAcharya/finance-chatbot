@@ -1,26 +1,28 @@
-Day 4 Complete ✅
+A cloud-native microservices application using AI to track and manage personal expenses.
 
-Integrated PostgreSQL database with persistent storage
+Progress
 
-Implemented PersistentVolumeClaims for data durability
+Day 5 Complete ✅
 
-Updated finance service with database operations
+Integrated OpenAI GPT-3.5 Turbo for natural language understanding
 
-Added Kubernetes Secrets for credential management
+Implemented intent detection system
 
-Data persists across pod restarts and deletions
+Built expense parsing from natural language
+
+Added AI-powered categorization for ambiguous expenses
+
+Enabled conversation context/memory
+
+Connected chat service to finance service
+
+Cost-optimized AI usage (~$0.01-0.05 per day)
 
 Architecture
 
-Kubernetes Cluster:
-
-Chat Service (2 pods) - Stateless
-
-Finance Service (2 pods) - Stateless
-
-PostgreSQL (1 pod) - Stateful with PersistentVolume
-
-Services for networking
+User → Chat Service (AI-powered) ↔ Finance Service → PostgreSQL
+                ↓
+              OpenAI GPT-3.5 API
 
 Technologies
 
@@ -28,40 +30,82 @@ Backend: Node.js, Express.js
 
 Database: PostgreSQL
 
+AI/ML: OpenAI GPT-3.5 Turbo
+
 Containerization: Docker
 
 Orchestration: Kubernetes
 
-Storage: PersistentVolumes
-
 Security: Kubernetes Secrets
+
+Features
+
+Track expenses using natural language: e.g., "I spent $15 on coffee"
+
+View expenses: "Show my expenses"
+
+Get summaries: "What's my total?"
+
+AI financial advice: "How can I save money?"
+
+Automatic expense categorization
+
+Conversation memory/context
+
+Category breakdown and statistics
+
+Cost Optimization
+
+Most requests use zero AI calls
+
+Average cost per interaction: ~$0.0003
+
+Daily usage cost: ~$0.01-$0.05
+
+OpenAI free credits last for weeks
 
 Running
 
-Start minikube:
-minikube start
-eval $(minikube docker-env)
+Start Minikube: minikube start
 
-Build images:
-docker build -t chat-service:v1 ./chat-service
-docker build -t finance-service:v2 ./finance-service
+Configure Docker environment: eval $(minikube docker-env)
 
-Deploy everything:
-kubectl apply -f k8s/secrets.yaml
-kubectl apply -f k8s/postgres-deployment.yaml
-kubectl apply -f k8s/chat-deployment.yaml
-kubectl apply -f k8s/finance-deployment.yaml
+Build Docker images for services
 
-Access services:
-kubectl port-forward service/finance-service 3002:80
+Deploy services using Kubernetes manifests
 
-Database Schema
+Port-forward chat service to localhost: kubectl port-forward service/chat-service 3001:80
 
-CREATE TABLE expenses (
-id SERIAL PRIMARY KEY,
-description TEXT NOT NULL,
-amount DECIMAL(10,2) NOT NULL,
-category VARCHAR(50) NOT NULL,
-date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
+Testing Chat
+
+Send a test message:
+
+curl -X POST http://localhost:3001/chat \
+  -H "Content-Type: application/json" \
+  -d '{"message":"I spent $20 on lunch"}'
+
+API Endpoints
+
+Chat Service
+
+POST /chat – Send message to AI chatbot
+
+GET /health – Health check
+
+Finance Service
+
+GET /expenses – List all expenses
+
+POST /expenses – Add an expense
+
+GET /stats – Category breakdown
+
+GET /categories – Available categories
+
+Next Steps
+
+Build React frontend with chat UI
+
+Deploy to AWS (EKS, RDS, S3)
+
+Production polish and monitoring
