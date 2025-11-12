@@ -8,11 +8,11 @@ app.use(express.json());
 
 // Database connection
 const pool = new Pool({
-  host: process.env.DB_HOST || 'postgres',
-  port: process.env.DB_PORT || 5432,
-  database: process.env.DB_NAME || 'financedb',
-  user: process.env.DB_USER || 'financeuser',
-  password: process.env.DB_PASSWORD || 'financepass',
+  host: process.env.DB_HOST,          // e.g., 'postgres' in Docker
+  port: parseInt(process.env.DB_PORT), // 5432
+  database: process.env.DB_NAME,      // 'financedb'
+  user: process.env.DB_USER,          // 'financeuser'
+  password: process.env.DB_PASSWORD,  // 'financepass'
 });
 
 // Initialize database tables
