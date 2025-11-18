@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Activity, AlertCircle } from 'lucide-react';
 import Chat from './components/Chat';
 import ExpenseDashboard from './components/ExpenseDashboard';
+import RecentExpenses from './components/RecentExpenses';
 import { chatApi, financeApi } from './services/api';
 import './App.css';
 
@@ -70,6 +71,8 @@ function App() {
       </header>
 
       <ExpenseDashboard />
+      <RecentExpenses /> 
+
 
       <main className="app-main">
         <Chat />
